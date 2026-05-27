@@ -27,6 +27,15 @@ type RouteHandlerConfig<Route extends AppRouteHandlerRoutes = AppRouteHandlerRou
   type __Unused = __Check
 }
 
+// Validate ../../app/image/updated/route.tsx
+{
+  type __IsExpected<Specific extends RouteHandlerConfig<"/image/updated">> = Specific
+  const handler = {} as typeof import("../../app/image/updated/route.js")
+  type __Check = __IsExpected<typeof handler>
+  // @ts-ignore
+  type __Unused = __Check
+}
+
 // Validate ../../app/route.ts
 {
   type __IsExpected<Specific extends RouteHandlerConfig<"/">> = Specific
