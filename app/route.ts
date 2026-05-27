@@ -1,59 +1,47 @@
 import { NextResponse } from "next/server";
-
+import prisma from "@/lib/prisma";
+ 
 export async function POST(request: Request) {
   try {
     const rawBody = await request.text();
     const snsMessage = JSON.parse(rawBody);
 
-    // 1. Confirm AWS SNS subscription
     if (snsMessage.Type === "SubscriptionConfirmation") {
       await fetch(snsMessage.SubscribeURL);
-
-      return Response.json({
-        ok: true,
-        message: "SNS subscription confirmed",
-      });
+      return Response.json({ ok: true, message: "SNS subscription confirmed" });
     }
 
-    // 2. Handle Bynder notification
     if (snsMessage.Type === "Notification") {
       const bynderEvent = JSON.parse(snsMessage.Message);
 
-      console.log("Bynder event:", bynderEvent);
+      const topic = bynderEvent.topic;
+      const assetId =
+        bynderEvent.data?.mediaId ||
+        bynderEvent.data?.id ||
+        bynderEvent.mediaId ||
+        null;
 
-      if (bynderEvent.topic === "asset_bank_media_create") {
-        const assetId =
-          bynderEvent.data?.mediaId ||
-          bynderEvent.data?.id ||
-          bynderEvent.mediaId;
+      await prisma.bynderWebhookEvent.create({
+        data: {
+          topic,
+          assetId,
+          payload: bynderEvent,
+        },
+      });
 
-        console.log("New Bynder asset created:", assetId);
-
-        // TODO:
-        // - save to DB
-        // - call Bynder API
-        // - trigger metadata sync
-        // - send Slack notification
+      if (topic === "asset_bank_media_create") {
+        console.log("Saved new Bynder asset event:", assetId);
       }
 
-      return Response.json({
-        ok: true,
-        message: "Webhook processed",
-      });
+      return Response.json({ ok: true, message: "Webhook saved" });
     }
 
-    return Response.json({
-      ok: true,
-      message: "Ignored message type",
-    });
+    return Response.json({ ok: true, message: "Ignored message type" });
   } catch (error) {
     console.error("Bynder webhook error:", error);
 
     return Response.json(
-      {
-        ok: false,
-        message: "Webhook failed",
-      },
+      { ok: false, message: "Webhook failed" },
       { status: 500 }
     );
   }
