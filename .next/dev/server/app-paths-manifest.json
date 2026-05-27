@@ -1,0 +1,6 @@
+{
+  "/[slug]/route": "app/[slug]/route.js",
+  "/_not-found/page": "app/_not-found/page.js",
+  "/image/updated/route": "app/image/updated/route.js",
+  "/route": "app/route.js"
+}

@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 46, "column": 0}, "map": {"version":3,"sources":["file:///C:/Projects/Bynder/ImageCrop/image-crop/app/image/updated/route.tsx"],"sourcesContent":["import { NextResponse } from \"next/server\";\r\n\r\nexport async function GET() {\r\n  return NextResponse.json({ message: \"my image world!\" });\r\n}\r\n"],"names":["GET","json","message"],"mappings":";;;;AAAA;;AAEO,eAAeA;IACpB,OAAO,gJAAY,CAACC,IAAI,CAAC;QAAEC,SAAS;IAAkB;AACxD"}}]
+}

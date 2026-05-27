@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 46, "column": 0}, "map": {"version":3,"sources":["file:///C:/Projects/Bynder/ImageCrop/image-crop/app/%5Bslug%5D/route.ts"],"sourcesContent":["import { NextRequest, NextResponse } from \"next/server\";\n\nexport async function GET(\n  request: NextRequest,\n  { params }: { params: Promise<{ slug: string }> },\n) {\n  const { slug } = await params;\n  return NextResponse.json({ message: `Hello ${slug}!` });\n}\n"],"names":["GET","request","params","slug","json","message"],"mappings":";;;;AAAA;;AAEO,eAAeA,IACpBC,OAAoB,EACpB,EAAEC,MAAM,EAAyC;IAEjD,MAAM,EAAEC,IAAI,EAAE,GAAG,MAAMD;IACvB,OAAO,gJAAY,CAACE,IAAI,CAAC;QAAEC,SAAS,CAAC,MAAM,EAAEF,KAAK,CAAC,CAAC;IAAC;AACvD"}}]
+}
