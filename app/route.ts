@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
+import { BynderWebhookEventCreateArgs } from "./generated/prisma/models";
  
 export async function POST(request: Request) {
   try {
@@ -12,6 +13,8 @@ export async function POST(request: Request) {
     }
 
     if (snsMessage.Type === "Notification") {
+      console.log("Received Bynder webhook:", snsMessage);
+      
       const bynderEvent = JSON.parse(snsMessage.Message);
 
       const topic = bynderEvent.topic;
@@ -21,13 +24,25 @@ export async function POST(request: Request) {
         bynderEvent.mediaId ||
         null;
 
-      await prisma.bynderWebhookEvent.create({
-        data: {
-          topic,
-          assetId,
-          payload: bynderEvent,
-        },
-      });
+        const arg : BynderWebhookEventCreateArgs = {
+          data: {
+            topic,
+            assetId,
+            payload: bynderEvent,
+          }
+        }
+
+        console.log("Saving Bynder webhook event to database:", arg);
+
+        try {
+          await prisma.bynderWebhookEvent.create(arg);}
+        catch (dbError) {
+            console.error("Database error while saving Bynder webhook event:", dbError);
+            return Response.json(
+              { ok: false, message: "Failed to save webhook" },
+              { status: 500 }
+            );
+          } 
 
       if (topic === "asset_bank_media_create") {
         console.log("Saved new Bynder asset event:", assetId);
