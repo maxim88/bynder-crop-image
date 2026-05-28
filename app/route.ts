@@ -28,7 +28,7 @@ export async function POST(request: Request) {
           data: {
             topic,
             assetId,
-            payload: bynderEvent,
+            payload: snsMessage.Message,
           }
         }
 
