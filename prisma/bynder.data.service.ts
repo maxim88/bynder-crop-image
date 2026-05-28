@@ -10,4 +10,4 @@ const prisma = new PrismaClient({
 
 export async function createAssetData(data:Prisma.BynderWebhookEventCreateInput) {
       await prisma.bynderWebhookEvent.create({ data: data });
-} 
+}  

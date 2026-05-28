@@ -10,11 +10,7 @@ if (!connectionString) {
 if (typeof connectionString !== "string") {
   throw new Error("DATABASE_URL must be a string");
 }
-
-if (!connectionString.startsWith("postgresql://")) {
-  throw new Error(`Invalid DATABASE_URL: ${connectionString}`);
-}
-
+ 
 const globalForPrisma = globalThis as unknown as {
   prisma?: PrismaClient;
 };
